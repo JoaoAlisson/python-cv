@@ -80,8 +80,12 @@
                 contentType: false,  // Não define o content-type
                 success: function(data) {
                     // Exibe o resultado em JSON
-                    $('#jsonResult').text(JSON.stringify(data, null, 2));
-                    $('#result').removeClass('d-none');
+                    $('#jsonResult').add(`
+                        <b>Acertos: </b>${data.acertos} <br>
+                        <b>Erros: </b>${data.erros} <br>
+                        <b>Pontuação: </b>${data.pontuacao} <br>
+                    `);
+                    $('#result').removeClass('d-none');`
                 },
                 error: function(xhr, status, error) {
                     console.error('Erro:', error);
