@@ -29,7 +29,7 @@
             <!-- Exibição do resultado do upload -->
             <div id="result" class="mt-3 d-none">
                 <h4>Resultado:</h4>
-                <pre id="jsonResult"></pre>
+                <div id="jsonResult"></div>
             </div>
 
             <!-- Loading Spinner -->
@@ -82,8 +82,8 @@
                     // Exibe o resultado em JSON
                     $('#jsonResult').text('');
                     $('#jsonResult').append(`
-                        <b>Acertos: </b>${data.acertos}
-                        <b>Erros: </b>${data.erros}
+                        <b>Acertos: </b>${data.acertos} <br>
+                        <b>Erros: </b>${data.erros} <br>
                         <b>Pontuação: </b>${data.pontuacao}
                     `);
                     $('#result').removeClass('d-none');
