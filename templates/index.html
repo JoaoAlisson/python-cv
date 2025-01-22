@@ -80,7 +80,8 @@
                 contentType: false,  // Não define o content-type
                 success: function(data) {
                     // Exibe o resultado em JSON
-                    $('#jsonResult').text(`
+                    $('#jsonResult').text('');
+                    $('#jsonResult').append(`
                         <b>Acertos: </b>${data.acertos} <br>
                         <b>Erros: </b>${data.erros} <br>
                         <b>Pontuação: </b>${data.pontuacao} <br>
