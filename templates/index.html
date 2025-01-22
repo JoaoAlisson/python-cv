@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload de Imagem</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body class="bg-light">
+
+    <div class="container d-flex flex-column align-items-center justify-content-center vh-100">
+        <div class="card shadow p-4 text-center" style="max-width: 400px; width: 100%;">
+            <h2 class="mb-4">Envio de Imagem</h2>
+
+            <!-- Pré-visualização da imagem -->
+            <img id="preview" src="" alt="Pré-visualização" class="img-fluid rounded d-none mb-3" />
+
+            <form id="uploadForm" action="/upload" method="post" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label for="file" class="form-label">Escolha uma imagem:</label>
+                    <input type="file" id="file" name="file" accept="image/*" capture="environment" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Enviar</button>
+            </form>
+
+            <!-- Exibição do resultado do upload -->
+            <div id="result" class="mt-3 d-none">
+                <h4>Resultado:</h4>
+                <pre id="jsonResult"></pre>
+            </div>
+
+            <!-- Loading Spinner -->
+            <div id="loading" class="spinner-border text-primary d-none mt-3" role="status">
+                <span class="visually-hidden">Processando...</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS Bundle (Popper + Bootstrap JS) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Função para exibir a pré-visualização da imagem
+        $('#file').on('change', function(event) {
+            const input = event.target;
+            const preview = $('#preview')[0];
+
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    $('#preview').removeClass('d-none');
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        });
+
+        // Função para enviar o formulário via AJAX usando jQuery
+        $('#uploadForm').on('submit', function(event) {
+            event.preventDefault();  // Impede o comportamento padrão do formulário
+
+            // Exibe o loading
+            $('#loading').removeClass('d-none');
+            $('#result').addClass('d-none');
+            $('#preview').addClass('d-none');
+
+            const formData = new FormData(this);
+            
+            // Envia o arquivo via AJAX para o servidor
+            $.ajax({
+                url: '/upload',
+                type: 'POST',
+                data: formData,
+                processData: false,  // Não processa o data
+                contentType: false,  // Não define o content-type
+                success: function(data) {
+                    // Exibe o resultado em JSON
+                    $('#jsonResult').text(JSON.stringify(data, null, 2));
+                    $('#result').removeClass('d-none');
+                },
+                error: function(xhr, status, error) {
+                    console.error('Erro:', error);
+                },
+                complete: function() {
+                    // Esconde o loading ao completar
+                    $('#loading').addClass('d-none');
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

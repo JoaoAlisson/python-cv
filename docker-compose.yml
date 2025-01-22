@@ -1,0 +1,14 @@
+version: "3.8"
+
+services:
+  flask-app:
+    build: .
+    container_name: flask-app
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+    working_dir: /app
+    environment:
+      - FLASK_ENV=development
+    command: python app.py
